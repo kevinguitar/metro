@@ -161,6 +161,15 @@ subprojects {
       apply(plugin = "org.jetbrains.dokka")
     }
     configure<MavenPublishBaseExtension> { publishToMavenCentral(automaticRelease = true) }
+    configure<PublishingExtension> {
+      repositories {
+        maven {
+          name = "metro"
+          url = uri("https://artifactory.bandlab.io/artifactory/libs-release-local")
+          credentials(PasswordCredentials::class)
+        }
+      }
+    }
 
     // configuration required to produce unique META-INF/*.kotlin_module file names
     tasks.withType<KotlinCompile>().configureEach {
