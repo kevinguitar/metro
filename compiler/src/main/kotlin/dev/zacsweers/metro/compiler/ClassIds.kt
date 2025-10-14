@@ -143,6 +143,8 @@ public class ClassIds(
     Symbols.FqNames.metroRuntimePackage.classIdOf("ContributesIntoSet")
   private val contributesIntoMapAnnotation =
     Symbols.FqNames.metroRuntimePackage.classIdOf("ContributesIntoMap")
+  private val metaContributionAnnotation =
+    Symbols.FqNames.metroRuntimePackage.classIdOf("MetaContribution")
 
   // TODO deprecated, remove these eventually
   private val contributesGraphExtensionAnnotation =
@@ -158,6 +160,8 @@ public class ClassIds(
     setOf(contributesIntoSetAnnotation) + customElementsIntoSetAnnotations
   internal val contributesIntoMapAnnotations =
     setOf(contributesIntoMapAnnotation) + customIntoMapAnnotations
+  internal val metaContributionAnnotations =
+    setOf(metaContributionAnnotation) //TODO: do we want to support custom annotation?
   internal val graphExtensionAnnotations =
     setOf(Symbols.ClassIds.graphExtension, contributesGraphExtensionAnnotation) +
       customGraphExtensionAnnotations

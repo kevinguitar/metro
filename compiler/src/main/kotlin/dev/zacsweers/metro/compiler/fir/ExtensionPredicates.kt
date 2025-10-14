@@ -24,6 +24,10 @@ internal class ExtensionPredicates(private val classIds: ClassIds) {
     DeclarationPredicate.create {
       metaAnnotated(classIds.mapKeyAnnotations.asFqNames(), includeItself = false)
     }
+  internal val metaContributionPredicate =
+    DeclarationPredicate.create {
+      metaAnnotated(classIds.metaContributionAnnotations.asFqNames(), includeItself = false)
+    }
 
   internal val bindingContainerPredicate =
     annotated(classIds.bindingContainerAnnotations.asFqNames())

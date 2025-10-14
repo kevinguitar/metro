@@ -179,6 +179,12 @@ internal object AggregationChecker : FirClassChecker(MppCheckerKind.Common) {
     isMapBinding: Boolean,
     createBinding: (FirTypeKey, mapKey: MetroFirAnnotation?) -> T,
   ): Boolean {
+    val isMetaContribution =
+      declaration.symbol.isAnnotatedWithAny(session, session.classIds.metaContributionAnnotations)
+    if (isMetaContribution) {
+      return false
+    }
+
     val isAssistedFactory =
       declaration.symbol.isAnnotatedWithAny(session, session.classIds.assistedFactoryAnnotations)
     // Ensure the class is injected or an object. Objects are ok IFF they are not @ContributesTo
