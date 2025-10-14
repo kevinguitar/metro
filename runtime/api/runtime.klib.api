@@ -180,6 +180,10 @@ open annotation class dev.zacsweers.metro/MapKey : kotlin/Annotation { // dev.za
         final fun <get-unwrapValue>(): kotlin/Boolean // dev.zacsweers.metro/MapKey.unwrapValue.<get-unwrapValue>|<get-unwrapValue>(){}[0]
 }
 
+open annotation class dev.zacsweers.metro/MetaContribution : kotlin/Annotation { // dev.zacsweers.metro/MetaContribution|null[0]
+    constructor <init>() // dev.zacsweers.metro/MetaContribution.<init>|<init>(){}[0]
+}
+
 open annotation class dev.zacsweers.metro/Multibinds : kotlin/Annotation { // dev.zacsweers.metro/Multibinds|null[0]
     constructor <init>(kotlin/Boolean = ...) // dev.zacsweers.metro/Multibinds.<init>|<init>(kotlin.Boolean){}[0]
 

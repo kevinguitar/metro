@@ -123,6 +123,9 @@ public abstract interface class dev/zacsweers/metro/MembersInjector {
 	public abstract fun injectMembers (Ljava/lang/Object;)V
 }
 
+public abstract interface annotation class dev/zacsweers/metro/MetaContribution : java/lang/annotation/Annotation {
+}
+
 public abstract interface annotation class dev/zacsweers/metro/Multibinds : java/lang/annotation/Annotation {
 	public abstract fun allowEmpty ()Z
 }
