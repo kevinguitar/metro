@@ -1337,6 +1337,22 @@ public class BoxTestGenerated extends AbstractBoxTest {
   }
 
   @Nested
+  @TestMetadata("compiler-tests/src/test/data/box/metacontribution")
+  @TestDataPath("$PROJECT_ROOT")
+  public class Metacontribution {
+    @Test
+    public void testAllFilesPresentInMetacontribution() {
+      KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("compiler-tests/src/test/data/box/metacontribution"), Pattern.compile("^(.+)\\.kt$"), null, TargetBackend.JVM_IR, true);
+    }
+
+    @Test
+    @TestMetadata("MetaContributesBinding.kt")
+    public void testMetaContributesBinding() {
+      runTest("compiler-tests/src/test/data/box/metacontribution/MetaContributesBinding.kt");
+    }
+  }
+
+  @Nested
   @TestMetadata("compiler-tests/src/test/data/box/multibindings")
   @TestDataPath("$PROJECT_ROOT")
   public class Multibindings {
