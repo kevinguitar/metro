@@ -9,7 +9,7 @@ import dev.zacsweers.metro.compiler.compat.CompatContext
 import dev.zacsweers.metro.compiler.decapitalizeUS
 import dev.zacsweers.metro.compiler.expectAsOrNull
 import dev.zacsweers.metro.compiler.fir.Keys
-import dev.zacsweers.metro.compiler.fir.annotationsIn
+import dev.zacsweers.metro.compiler.fir.allContributionAnnotations
 import dev.zacsweers.metro.compiler.fir.buildSimpleAnnotation
 import dev.zacsweers.metro.compiler.fir.classIds
 import dev.zacsweers.metro.compiler.fir.hasOrigin
@@ -45,7 +45,6 @@ import org.jetbrains.kotlin.fir.resolve.defaultType
 import org.jetbrains.kotlin.fir.symbols.impl.FirClassLikeSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirClassSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirConstructorSymbol
-import org.jetbrains.kotlin.fir.types.isResolved
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.name.SpecialNames
@@ -64,8 +63,7 @@ internal class ContributionsFirGenerator(session: FirSession, compatContext: Com
     session.firCachesFactory.createCache { contributingClassSymbol, _ ->
       val contributionAnnotations =
         contributingClassSymbol.resolvedCompilerAnnotationsWithClassIds
-          .annotationsIn(session, session.classIds.allContributesAnnotations)
-          .toList()
+          .allContributionAnnotations(session)
 
       val contributionNamesToScopeArgs = mutableMapOf<Name, FirGetClassCall?>()
 
@@ -73,7 +71,7 @@ internal class ContributionsFirGenerator(session: FirSession, compatContext: Com
         // We create a contribution class for each scope being contributed to. E.g. if there are
         // contributions for AppScope and LibScope we'll create $$MetroContributionToLibScope and
         // $$MetroContributionToAppScope
-        // It'll try to use the fully name if possible, but because we really just need these to be
+        // It'll try to use the full name if possible, but because we really just need these to be
         // disambiguated we can just safely fall back to the short name in the worst case
         contributionAnnotations
           .mapNotNull { it.scopeArgument() }
@@ -102,6 +100,7 @@ internal class ContributionsFirGenerator(session: FirSession, compatContext: Com
   override fun FirDeclarationPredicateRegistrar.registerPredicates() {
     register(session.predicates.contributesAnnotationPredicate)
     register(session.predicates.bindingContainerPredicate)
+    register(session.predicates.metaContributionPredicate)
   }
 
   sealed interface Contribution {
@@ -152,7 +151,7 @@ internal class ContributionsFirGenerator(session: FirSession, compatContext: Com
     val contributesIntoMapAnnotations = session.classIds.contributesIntoMapAnnotations
     val contributions = mutableSetOf<Contribution>()
     for (annotation in
-      contributingSymbol.resolvedCompilerAnnotationsWithClassIds.filter { it.isResolved }) {
+      contributingSymbol.resolvedCompilerAnnotationsWithClassIds.allContributionAnnotations(session)) {
       val annotationClassId = annotation.toAnnotationClassIdSafe(session) ?: continue
       when (annotationClassId) {
         in contributesToAnnotations -> {
@@ -240,8 +239,11 @@ internal class ContributionsFirGenerator(session: FirSession, compatContext: Com
       }
     }
 
-    // Don't generate nested classes for @BindingContainer-annotated classes
-    if (classSymbol.isAnnotatedWithAny(session, session.classIds.bindingContainerAnnotations)) {
+    // Don't generate nested classes for @BindingContainer and @MetaContribution-annotated classes
+    if (
+      classSymbol.isAnnotatedWithAny(session, session.classIds.bindingContainerAnnotations) ||
+      classSymbol.isAnnotatedWithAny(session, session.classIds.metaContributionAnnotations)
+    ) {
       return emptySet()
     }
     return contributingClassToScopedContributions.getValue(classSymbol, Unit).keys

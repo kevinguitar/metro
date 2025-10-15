@@ -43,6 +43,7 @@ import org.jetbrains.kotlin.fir.declarations.hasAnnotation
 import org.jetbrains.kotlin.fir.declarations.origin
 import org.jetbrains.kotlin.fir.declarations.primaryConstructorIfAny
 import org.jetbrains.kotlin.fir.declarations.toAnnotationClassIdSafe
+import org.jetbrains.kotlin.fir.declarations.toAnnotationClassLikeSymbol
 import org.jetbrains.kotlin.fir.declarations.utils.classId
 import org.jetbrains.kotlin.fir.declarations.utils.isAbstract
 import org.jetbrains.kotlin.fir.declarations.utils.isFinal
@@ -122,6 +123,7 @@ import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.name.StandardClassIds
 import org.jetbrains.kotlin.types.ConstantValueKind
+import kotlin.sequences.filterIsInstance
 
 internal fun FirBasedSymbol<*>.isAnnotatedInject(session: FirSession): Boolean {
   return isAnnotatedWithAny(session, session.classIds.injectAnnotations)
@@ -671,6 +673,32 @@ internal fun Sequence<FirAnnotation>.scopeAnnotations(
   session: FirSession
 ): Sequence<MetroFirAnnotation> =
   annotationsAnnotatedWithAny(session, session.classIds.scopeAnnotations)
+
+internal fun List<FirAnnotation>.allContributionAnnotations(
+  session: FirSession
+): List<FirAnnotation> = asSequence()
+  .filter { it.isResolved }
+  .filterIsInstance<FirAnnotationCall>()
+  .flatMap { annotation ->
+    when {
+      annotation.toAnnotationClassIdSafe(session) in session.classIds.allContributesAnnotations -> {
+        sequenceOf(annotation)
+      }
+
+      annotation.isAnnotatedWithAny(session, session.classIds.metaContributionAnnotations) -> {
+        // Find all meta-contribution annotations on this annotation
+        val metaAnnotationSymbol = annotation.toAnnotationClassLikeSymbol(session) ?: return@flatMap emptySequence()
+        metaAnnotationSymbol.resolvedCompilerAnnotationsWithClassIds
+          .asSequence()
+          .filter {
+            it.toAnnotationClassIdSafe(session) in session.classIds.allContributesAnnotations
+          }
+      }
+
+      else -> emptySequence()
+    }
+  }
+  .toList()
 
 // TODO add a single = true|false param? How would we propagate errors
 internal fun Sequence<FirAnnotation>.annotationAnnotatedWithAny(
