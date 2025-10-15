@@ -69,6 +69,22 @@ public class FirDumpTestGenerated extends AbstractFirDumpTest {
   }
 
   @Nested
+  @TestMetadata("compiler-tests/src/test/data/dump/fir/meta-contribution-transformation")
+  @TestDataPath("$PROJECT_ROOT")
+  public class Meta_contribution_transformation {
+    @Test
+    public void testAllFilesPresentInMeta_contribution_transformation() {
+      KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("compiler-tests/src/test/data/dump/fir/meta-contribution-transformation"), Pattern.compile("^(.+)\\.kt$"), null, TargetBackend.JVM_IR, true);
+    }
+
+    @Test
+    @TestMetadata("MetaContributesBinding.kt")
+    public void testMetaContributesBinding() {
+      runTest("compiler-tests/src/test/data/dump/fir/meta-contribution-transformation/MetaContributesBinding.kt");
+    }
+  }
+
+  @Nested
   @TestMetadata("compiler-tests/src/test/data/dump/fir/private-provides-status-transformation")
   @TestDataPath("$PROJECT_ROOT")
   public class Private_provides_status_transformation {

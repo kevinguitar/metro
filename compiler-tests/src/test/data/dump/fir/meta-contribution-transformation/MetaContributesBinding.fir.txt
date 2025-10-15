@@ -1,0 +1,138 @@
+FILE: MetaContributesBinding.kt
+    @R|dev/zacsweers/metro/MetaContribution|() @R|dev/zacsweers/metro/ContributesBinding|(scope = <getClass>(Q|dev/zacsweers/metro/AppScope|)) public final annotation class ContributesBindingToApp : R|kotlin/Annotation| {
+        public constructor(): R|ContributesBindingToApp| {
+            super<R|kotlin/Any|>()
+        }
+
+    }
+    @R|dev/zacsweers/metro/MetaContribution|() @R|dev/zacsweers/metro/ContributesBinding|(scope = <getClass>(Q|dev/zacsweers/metro/AppScope|), binding = R|dev/zacsweers/metro/binding.binding|<R|Config<*>|>()) public final annotation class ContributesConfigToApp : R|kotlin/Annotation| {
+        public constructor(): R|ContributesConfigToApp| {
+            super<R|kotlin/Any|>()
+        }
+
+    }
+    public abstract interface Config<T> : R|kotlin/Any| {
+        public abstract val value: R|T|
+            public get(): R|T|
+
+    }
+    @R|ContributesBindingToApp|() @R|dev/zacsweers/metro/Inject|() public final class StringConfig : R|Config<kotlin/String>| {
+        public constructor(): R|StringConfig| {
+            super<R|kotlin/Any|>()
+        }
+
+        public open override val value: R|kotlin/String|
+            public get(): R|kotlin/String| {
+                ^ String(str)
+            }
+
+        @R|kotlin/Deprecated|(message = String(This synthesized declaration should not be used directly), level = Q|kotlin/DeprecationLevel|.R|kotlin/DeprecationLevel.HIDDEN|) public final object $$MetroFactory : R|dev/zacsweers/metro/internal/Factory<StringConfig>| {
+            public final fun create(): R|dev/zacsweers/metro/internal/Factory<StringConfig>|
+
+            public final fun newInstance(): R|StringConfig|
+
+            private constructor(): R|StringConfig.$$MetroFactory| {
+                super<R|kotlin/Any|>()
+            }
+
+        }
+
+        @R|kotlin/Deprecated|(message = String(This synthesized declaration should not be used directly), level = Q|kotlin/DeprecationLevel|.R|kotlin/DeprecationLevel.HIDDEN|) @R|dev/zacsweers/metro/internal/MetroContribution|(scope = <getClass>(Q|dev/zacsweers/metro/AppScope|)) public abstract interface $$MetroContributionToAppScope : R|kotlin/Any| {
+            @R|kotlin/Deprecated|(message = String(This synthesized declaration should not be used directly), level = Q|kotlin/DeprecationLevel|.R|kotlin/DeprecationLevel.HIDDEN|) public abstract class $$BindsMirror : R|kotlin/Any| {
+                private constructor(): R|StringConfig.$$MetroContributionToAppScope.$$BindsMirror| {
+                    super<R|kotlin/Any|>()
+                }
+
+            }
+
+        }
+
+    }
+    @R|dev/zacsweers/metro/ContributesBinding|(scope = <getClass>(Q|dev/zacsweers/metro/AppScope|)) @R|dev/zacsweers/metro/Inject|() public final class LongConfig : R|Config<kotlin/Long>| {
+        public constructor(): R|LongConfig| {
+            super<R|kotlin/Any|>()
+        }
+
+        public open override val value: R|kotlin/Long|
+            public get(): R|kotlin/Long| {
+                ^ Long(1)
+            }
+
+        @R|kotlin/Deprecated|(message = String(This synthesized declaration should not be used directly), level = Q|kotlin/DeprecationLevel|.R|kotlin/DeprecationLevel.HIDDEN|) public final object $$MetroFactory : R|dev/zacsweers/metro/internal/Factory<LongConfig>| {
+            public final fun create(): R|dev/zacsweers/metro/internal/Factory<LongConfig>|
+
+            public final fun newInstance(): R|LongConfig|
+
+            private constructor(): R|LongConfig.$$MetroFactory| {
+                super<R|kotlin/Any|>()
+            }
+
+        }
+
+        @R|kotlin/Deprecated|(message = String(This synthesized declaration should not be used directly), level = Q|kotlin/DeprecationLevel|.R|kotlin/DeprecationLevel.HIDDEN|) @R|dev/zacsweers/metro/internal/MetroContribution|(scope = <getClass>(Q|dev/zacsweers/metro/AppScope|)) public abstract interface $$MetroContributionToAppScope : R|kotlin/Any| {
+            @R|kotlin/Deprecated|(message = String(This synthesized declaration should not be used directly), level = Q|kotlin/DeprecationLevel|.R|kotlin/DeprecationLevel.HIDDEN|) public abstract class $$BindsMirror : R|kotlin/Any| {
+                private constructor(): R|LongConfig.$$MetroContributionToAppScope.$$BindsMirror| {
+                    super<R|kotlin/Any|>()
+                }
+
+            }
+
+        }
+
+    }
+    @R|ContributesConfigToApp|() @R|dev/zacsweers/metro/Inject|() public final class IntConfig : R|Config<kotlin/Int>| {
+        public constructor(): R|IntConfig| {
+            super<R|kotlin/Any|>()
+        }
+
+        public open override val value: R|kotlin/Int|
+            public get(): R|kotlin/Int| {
+                ^ Int(42)
+            }
+
+        @R|kotlin/Deprecated|(message = String(This synthesized declaration should not be used directly), level = Q|kotlin/DeprecationLevel|.R|kotlin/DeprecationLevel.HIDDEN|) public final object $$MetroFactory : R|dev/zacsweers/metro/internal/Factory<IntConfig>| {
+            public final fun create(): R|dev/zacsweers/metro/internal/Factory<IntConfig>|
+
+            public final fun newInstance(): R|IntConfig|
+
+            private constructor(): R|IntConfig.$$MetroFactory| {
+                super<R|kotlin/Any|>()
+            }
+
+        }
+
+        @R|kotlin/Deprecated|(message = String(This synthesized declaration should not be used directly), level = Q|kotlin/DeprecationLevel|.R|kotlin/DeprecationLevel.HIDDEN|) @R|dev/zacsweers/metro/internal/MetroContribution|(scope = <getClass>(Q|dev/zacsweers/metro/AppScope|)) public abstract interface $$MetroContributionToAppScope : R|kotlin/Any| {
+            @R|kotlin/Deprecated|(message = String(This synthesized declaration should not be used directly), level = Q|kotlin/DeprecationLevel|.R|kotlin/DeprecationLevel.HIDDEN|) public abstract class $$BindsMirror : R|kotlin/Any| {
+                private constructor(): R|IntConfig.$$MetroContributionToAppScope.$$BindsMirror| {
+                    super<R|kotlin/Any|>()
+                }
+
+            }
+
+        }
+
+    }
+    @R|dev/zacsweers/metro/DependencyGraph|(scope = <getClass>(Q|dev/zacsweers/metro/AppScope|)) public abstract interface AppGraph : R|kotlin/Any|, R|LongConfig.$$MetroContributionToAppScope| {
+        public abstract val stringConfig: R|Config<kotlin/String>|
+            public get(): R|Config<kotlin/String>|
+
+        public abstract val intConfig: R|Config<*>|
+            public get(): R|Config<*>|
+
+        @R|kotlin/Deprecated|(message = String(This synthesized declaration should not be used directly), level = Q|kotlin/DeprecationLevel|.R|kotlin/DeprecationLevel.HIDDEN|) public final class $$MetroGraph : R|AppGraph| {
+            private constructor(): R|AppGraph.$$MetroGraph| {
+                super<R|kotlin/Any|>()
+            }
+
+        }
+
+        public final companion object Companion : R|kotlin/Any| {
+            @R|dev/zacsweers/metro/internal/GraphFactoryInvokeFunctionMarker|() public final operator fun invoke(): R|AppGraph|
+
+            private constructor(): R|AppGraph.Companion| {
+                super<R|kotlin/Any|>()
+            }
+
+        }
+
+    }

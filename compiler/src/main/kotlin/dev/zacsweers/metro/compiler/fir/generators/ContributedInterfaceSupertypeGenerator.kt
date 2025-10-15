@@ -3,6 +3,7 @@
 package dev.zacsweers.metro.compiler.fir.generators
 
 import dev.zacsweers.metro.compiler.Symbols
+import dev.zacsweers.metro.compiler.asFqNames
 import dev.zacsweers.metro.compiler.compat.CompatContext
 import dev.zacsweers.metro.compiler.expectAsOrNull
 import dev.zacsweers.metro.compiler.fir.FirTypeKey
@@ -42,6 +43,9 @@ import org.jetbrains.kotlin.fir.declarations.utils.visibility
 import org.jetbrains.kotlin.fir.expressions.FirAnnotation
 import org.jetbrains.kotlin.fir.extensions.FirDeclarationPredicateRegistrar
 import org.jetbrains.kotlin.fir.extensions.FirSupertypeGenerationExtension
+import org.jetbrains.kotlin.fir.extensions.predicate.DeclarationPredicate
+import org.jetbrains.kotlin.fir.extensions.predicate.LookupPredicate
+import org.jetbrains.kotlin.fir.extensions.predicate.LookupPredicate.BuilderContext.annotated
 import org.jetbrains.kotlin.fir.extensions.predicateBasedProvider
 import org.jetbrains.kotlin.fir.lookupTracker
 import org.jetbrains.kotlin.fir.moduleData
@@ -94,12 +98,27 @@ internal class ContributedInterfaceSupertypeGenerator(session: FirSession) :
       // their declaration scopes
       val contributingClasses =
         allSessions
-          .flatMap {
-            it.predicateBasedProvider.getSymbolsByPredicate(
-              session.predicates.contributesAnnotationPredicate
-            )
+          .flatMap { session ->
+            val metaAnnotations =
+              session.predicateBasedProvider
+                .getSymbolsByPredicate(session.predicates.metaContributionAnnotationPredicate)
+                .mapNotNull { (it as? FirRegularClassSymbol)?.classId }
+
+            val allContributionAnnotations =
+              (session.classIds.allContributesAnnotations + metaAnnotations).asFqNames()
+
+            if (allContributionAnnotations.isEmpty()) {
+              emptySequence()
+            } else {
+              //TODO: Run into a dilemma here as getSymbolsByPredicate doesn't seem to work with "dynamic" predicates,
+              // but we really need this to work because getSymbolsByPredicate doesn't support DeclarationPredicate.
+              session.predicateBasedProvider
+                .getSymbolsByPredicate(annotated(allContributionAnnotations))
+                .asSequence()
+            }
           }
           .filterIsInstance<FirRegularClassSymbol>()
+          .filterNot { it.isAnnotatedWithAny(session, session.classIds.metaContributionAnnotations) }
           .toList()
 
       getScopedContributions(contributingClasses, scopeClassId, typeResolver)
@@ -204,6 +223,8 @@ internal class ContributedInterfaceSupertypeGenerator(session: FirSession) :
       register(
         dependencyGraphPredicate,
         contributesAnnotationPredicate,
+        metaContributionPredicate,
+        metaContributionAnnotationPredicate,
         graphExtensionFactoryPredicate,
         qualifiersPredicate,
         bindingContainerPredicate,
