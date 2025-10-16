@@ -98,9 +98,8 @@ internal class ContributionsFirGenerator(session: FirSession, compatContext: Com
     }
 
   override fun FirDeclarationPredicateRegistrar.registerPredicates() {
-    register(session.predicates.contributesAnnotationPredicate)
+    register(session.predicates.allContributionsPredicate)
     register(session.predicates.bindingContainerPredicate)
-    register(session.predicates.metaContributionPredicate)
   }
 
   sealed interface Contribution {

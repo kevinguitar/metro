@@ -222,8 +222,7 @@ internal class ContributedInterfaceSupertypeGenerator(session: FirSession) :
     with(session.predicates) {
       register(
         dependencyGraphPredicate,
-        contributesAnnotationPredicate,
-        metaContributionPredicate,
+        allContributionsPredicate,
         metaContributionAnnotationPredicate,
         graphExtensionFactoryPredicate,
         qualifiersPredicate,

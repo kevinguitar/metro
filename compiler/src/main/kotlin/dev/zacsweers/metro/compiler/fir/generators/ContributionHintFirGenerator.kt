@@ -65,6 +65,7 @@ internal class ContributionHintFirGenerator(session: FirSession, compatContext: 
       session.predicateBasedProvider.getSymbolsByPredicate(
         session.predicates.injectAnnotationPredicate
       )
+    //TODO: Looks like we'll need to process meta contributions here as well
     val contributedClasses =
       session.predicateBasedProvider.getSymbolsByPredicate(
         session.predicates.contributesAnnotationPredicate
