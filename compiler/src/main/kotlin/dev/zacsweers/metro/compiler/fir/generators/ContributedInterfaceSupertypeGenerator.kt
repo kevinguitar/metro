@@ -112,6 +112,7 @@ internal class ContributedInterfaceSupertypeGenerator(session: FirSession) :
             } else {
               //TODO: Run into a dilemma here as getSymbolsByPredicate doesn't seem to work with "dynamic" predicates,
               // but we really need this to work because getSymbolsByPredicate doesn't support DeclarationPredicate.
+              // See: https://youtrack.jetbrains.com/issue/KT-81853
               session.predicateBasedProvider
                 .getSymbolsByPredicate(annotated(allContributionAnnotations))
                 .asSequence()
