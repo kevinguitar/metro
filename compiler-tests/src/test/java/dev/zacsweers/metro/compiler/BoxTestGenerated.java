@@ -1350,6 +1350,12 @@ public class BoxTestGenerated extends AbstractBoxTest {
     public void testMetaContributesBinding() {
       runTest("compiler-tests/src/test/data/box/metacontribution/MetaContributesBinding.kt");
     }
+
+    @Test
+    @TestMetadata("MetaContributesBindingToGraphExtension.kt")
+    public void testMetaContributesBindingToGraphExtension() {
+      runTest("compiler-tests/src/test/data/box/metacontribution/MetaContributesBindingToGraphExtension.kt");
+    }
   }
 
   @Nested

@@ -7,6 +7,7 @@ import dev.zacsweers.metro.compiler.Symbols
 import dev.zacsweers.metro.compiler.asName
 import dev.zacsweers.metro.compiler.ir.IrContributionData
 import dev.zacsweers.metro.compiler.ir.IrMetroContext
+import dev.zacsweers.metro.compiler.ir.allContributionAnnotations
 import dev.zacsweers.metro.compiler.ir.annotationClass
 import dev.zacsweers.metro.compiler.ir.annotationsIn
 import dev.zacsweers.metro.compiler.ir.bindingTypeOrNull
@@ -279,7 +280,7 @@ internal class ContributionTransformer(private val context: IrMetroContext) :
     val contributesIntoSetAnnotations = metroSymbols.classIds.contributesIntoSetAnnotations
     val contributesIntoMapAnnotations = metroSymbols.classIds.contributesIntoMapAnnotations
     val contributions = mutableSetOf<Contribution>()
-    for (annotation in contributingSymbol.annotations) {
+    for (annotation in contributingSymbol.allContributionAnnotations()) {
       val annotationClassId = annotation.annotationClass.classId ?: continue
       when (annotationClassId) {
         in contributesToAnnotations -> {

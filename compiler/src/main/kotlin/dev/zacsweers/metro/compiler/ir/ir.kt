@@ -1566,6 +1566,18 @@ private fun List<IrConstructorCall>?.annotationsAnnotatedWith(
 }
 
 context(context: IrMetroContext)
+internal fun IrAnnotationContainer.allContributionAnnotations(): List<IrConstructorCall> {
+  return annotationsIn(context.metroSymbols.classIds.allContributesAnnotations).toList() +
+    annotations
+      .filter { it.isAnnotatedWithAny(context.metroSymbols.classIds.metaContributionAnnotations) }
+      .flatMap { annotation ->
+        annotation.annotationClass
+          .annotations
+          .filter { it.annotationClass.classId in context.metroSymbols.classIds.allContributesAnnotations }
+      }
+}
+
+context(context: IrMetroContext)
 internal fun IrClass.findInjectableConstructor(onlyUsePrimaryConstructor: Boolean): IrConstructor? {
   if (kind.isObject) {
     // No constructor for this one but can be annotated with Contributes*
