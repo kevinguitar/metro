@@ -34,6 +34,11 @@ public class MetroFirExtensionRegistrar(
   private val compatContext: CompatContext,
 ) : FirExtensionRegistrar() {
   override fun ExtensionRegistrarContext.configurePlugin() {
+      val clazz = Class.forName("com.example.compiler.extension.fir.ContributesConfigExtension")
+      FirDeclarationGenerationExtension.Factory { session ->
+          clazz.constructors.single().newInstance(session) as FirDeclarationGenerationExtension
+      }.unaryPlus()
+
     +MetroFirBuiltIns.getFactory(classIds, options)
     +::MetroFirCheckers
     +supertypeGenerator("Supertypes - graph factory", ::GraphFactoryFirSupertypeGenerator, false)
