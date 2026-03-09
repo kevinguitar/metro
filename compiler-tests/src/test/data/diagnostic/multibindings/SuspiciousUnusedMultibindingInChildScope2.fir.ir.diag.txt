@@ -1,0 +1,10 @@
+/module_main_SuspiciousUnusedMultibindingInChildScope2.kt:(127,135): warning: [Metro/SuspiciousUnusedMultibinding] Synthetic multibinding @dev.zacsweers.metro.Named("OnFeedLoaded") kotlin.collections.Set<kotlin.Function0<kotlin.Unit>> is unused but has 1 source binding(s). Did you possibly bind them to the wrong type or contribute them to the wrong scope?
+
+  AppReviewAction
+    @dev.zacsweers.metro.Named("OnFeedLoaded") @IntoSet fun provideAppReviewAction(): kotlin.Function0<kotlin.Unit>
+                                                                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+(Hint)
+@Named("OnFeedLoaded") Set<Function0<Unit>> _is_ used in the following child graph scope(s):
+  - FeedScope
+These bindings may need to be contributed to one of those scopes instead.
