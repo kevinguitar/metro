@@ -1,6 +1,5 @@
 // Copyright (C) 2026 Zac Sweers
 // SPDX-License-Identifier: Apache-2.0
-import foundry.gradle.properties.PropertyResolver
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinBasePlugin
@@ -9,20 +8,12 @@ apply(plugin = "com.vanniktech.maven.publish")
 
 apply(plugin = "com.autonomousapps.testkit")
 
-val extension = project.extensions.create<MetroPublishExtension>("metroPublish")
-
-val artifactIdProvider =
-  PropertyResolver(project).optionalStringProvider("POM_ARTIFACT_ID", project.name)
-
-extension.artifactId.convention(artifactIdProvider)
-
-if (!isCompilerProject) {
-  plugins.withType<KotlinBasePlugin> { configure<KotlinProjectExtension> { explicitApi() } }
+project.extensions.create<MetroPublishExtension>("metroPublish").apply {
+  artifactId.convention(project.name)
 }
 
-// Every publish task must run after every sign task to avoid implicit-dependency validation
-// errors where the testkit publication and main publication share outputs from each other's
-// signing tasks.
+plugins.withType<KotlinBasePlugin> { configure<KotlinProjectExtension> { explicitApi() } }
+
 tasks
-  .named { it.startsWith("publish") && it.contains("PublicationTo") }
+  .named { it == "publishTestKitSupportForJavaPublicationToFunctionalTestRepository" }
   .configureEach { mustRunAfter(tasks.matching { it.name.startsWith("sign") }) }

@@ -266,10 +266,7 @@ if [ -n "$DELEGATES_TO" ]; then
   cat > "$MODULE_DIR/build.gradle.kts" << EOF
 // Copyright (C) 2026 Zac Sweers
 // SPDX-License-Identifier: Apache-2.0
-plugins {
-  alias(libs.plugins.kotlin.jvm)
-  id("metro.publish")
-}
+plugins { alias(libs.plugins.kotlin.jvm) }
 
 dependencies {
   val kotlinVersion =
@@ -285,10 +282,7 @@ else
   cat > "$MODULE_DIR/build.gradle.kts" << EOF
 // Copyright (C) 2026 Zac Sweers
 // SPDX-License-Identifier: Apache-2.0
-plugins {
-  alias(libs.plugins.kotlin.jvm)
-  id("metro.publish")
-}
+plugins { alias(libs.plugins.kotlin.jvm) }
 
 dependencies {
   val kotlinVersion = providers.fileContents(layout.projectDirectory.file("version.txt")).asText.map { it.trim() }
@@ -298,16 +292,6 @@ dependencies {
 }
 EOF
 fi
-
-# Generate gradle.properties for publishing
-cat > "$MODULE_DIR/gradle.properties" << EOF
-POM_NAME=Metro Compiler Compat (Kotlin $KOTLIN_VERSION)
-POM_ARTIFACT_ID=compiler-compat-$MODULE_NAME
-POM_PACKAGING=jar
-
-# kotlinc imposes its own
-kotlin.stdlib.default.dependency=false
-EOF
 
 # Generate CompatContextImpl.kt
 if [ -n "$DELEGATES_TO" ]; then
