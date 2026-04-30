@@ -139,6 +139,16 @@ pluginManager.withPlugin("metro.publish") {
         validateDeployment = DeploymentValidation.VALIDATED,
       )
     }
+
+    extensions.configure<PublishingExtension> {
+      repositories {
+        maven {
+          name = "BandLab"
+          url = uri("https://artifactory.bandlab.cloud/artifactory/libs-release-local")
+          credentials(PasswordCredentials::class)
+        }
+      }
+    }
   }
 }
 
