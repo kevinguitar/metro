@@ -139,6 +139,22 @@ pluginManager.withPlugin("metro.publish") {
         validateDeployment = DeploymentValidation.VALIDATED,
       )
     }
+
+    extensions.configure<PublishingExtension> {
+      repositories {
+        maven {
+          name = "BandLab"
+          url = uri("https://artifactory.bandlab.cloud/artifactory/libs-release-local")
+          credentials(PasswordCredentials::class)
+        }
+      }
+    }
+
+    // Prevent the testkit publication from being published to BandLab, as it shares
+    // coordinates with the main maven publication.
+    tasks
+      .matching { it.name == "publishTestKitSupportForJavaPublicationToBandLabRepository" }
+      .configureEach { enabled = false }
   }
 }
 
